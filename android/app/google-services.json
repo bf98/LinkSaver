@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "798662911029",
+    "project_id": "linksaver-c56a9",
+    "storage_bucket": "linksaver-c56a9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798662911029:android:739c333fc9766ed011fd7c",
+        "android_client_info": {
+          "package_name": "com.example.linksaver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAGAVfzZH5L_0KTe9ux-zBoJGRSRfwnf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
