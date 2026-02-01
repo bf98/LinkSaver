@@ -194,7 +194,7 @@ class SignInScreen extends StatelessWidget {
                   );
                 }
               },
-              child: const Text('Sign-In'),
+              child: const Text('Accedi'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -212,7 +212,7 @@ class SignInScreen extends StatelessWidget {
                   );
                 }
               },
-              child: const Text('Register'),
+              child: const Text('Registrati'),
             ),
           ],
         ),
