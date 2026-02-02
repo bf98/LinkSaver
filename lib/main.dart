@@ -156,6 +156,24 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true; 
 
+  @override 
+  void initState() {
+	super.initState();
+	_emailController.addListener(_updateButtonState);
+	_passwordController.addListener(_updateButtonState);
+  }
+
+  void _updateButtonState() {
+	setState(() {});
+  }
+  
+  @override 
+  void dispose() {
+	_emailController.dispose();
+	_passwordController.dispose();
+	super.dispose();
+  }
+
   void _togglePasswordVisibility() {
     setState(() {
       _obscureText = !_obscureText; 
@@ -192,7 +210,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
 			SizedBox(height: 25),
             ElevatedButton(
-              onPressed: () async {
+              onPressed: (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) ? () async {
                 String? user = await _auth.signInWithEmailAndPassword(
                   _emailController.text,
                   _passwordController.text,
@@ -201,11 +219,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     SnackBar(content: Text(user ?? '.')),
                   );
 				  print(user);
-              },
+              } : null,
               child: const Text('Accedi'),
             ),
             ElevatedButton(
-              onPressed: () async {
+              onPressed: (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) ? () async {
                 String? user = await _auth.registerWithEmailAndPassword(
                   _emailController.text,
                   _passwordController.text,
@@ -214,7 +232,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     SnackBar(content: Text(user ?? '.')),
                   );
 				  print(user);
-              },
+              } : null,
               child: const Text('Registrati'),
             ),
           ],
@@ -249,7 +267,7 @@ class _HomeState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Links'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profilo'),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -375,9 +393,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 			SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {
-                themeProvider.toggleTheme();
-              },
+              onPressed: themeProvider.toggleTheme,
               child: const Text("Cambia Tema"),
             ),
           ],
@@ -539,6 +555,8 @@ class _LinksScreenState extends State<LinksScreen> {
 
   void _showAddLinkDialog() {
     final TextEditingController _titleController = TextEditingController();
+	_titleController.clear();
+	_linkController.clear();
 
     showDialog(
       context: context,
