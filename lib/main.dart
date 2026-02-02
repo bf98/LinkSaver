@@ -56,6 +56,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: "linksaver",
       theme: themeProvider.isDarkMode ? ThemeData.dark() : ThemeData.light(),
+	  debugShowCheckedModeBanner: false,
       home: AuthWrapper(),
     );
   }
@@ -633,7 +634,7 @@ class _LinksScreenState extends State<LinksScreen> {
         actions: [
           Text('Tot: $linksCount'),
           IconButton(icon: Icon(Icons.search), onPressed: _showFilterDialog),
-          IconButton(icon: Icon(Icons.star), onPressed: _toggleFavorite),
+          IconButton(icon: Icon(showFavoritesOnly ? Icons.star : Icons.star_border), onPressed: _toggleFavorite),
         ],
       ),
       body: ListView.builder(
