@@ -249,10 +249,9 @@ class HomeScreen extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+int _selectedIndex = 0;
 class _HomeState extends State<HomeScreen> {
   final List<Widget> _screens = [LinksScreen(), ProfileScreen()];
-
-  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
