@@ -169,6 +169,7 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+		  mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
               controller: _emailController,
@@ -189,6 +190,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               obscureText: _obscureText, 
             ),
+			SizedBox(height: 25),
             ElevatedButton(
               onPressed: () async {
                 String? user = await _auth.signInWithEmailAndPassword(
@@ -363,12 +365,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           as ImageProvider,
               ),
             ),
+			SizedBox(height: 25),
             Text(email),
+			SizedBox(height: 25),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: changeAvatar,
               child: const Text("Cambia Avatar"),
             ),
+			SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 themeProvider.toggleTheme();
@@ -541,10 +546,11 @@ class _LinksScreenState extends State<LinksScreen> {
         return AlertDialog(
           title: Text('Aggiungi Link'),
           content: Column(
+			mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: _titleController,
-                decoration: InputDecoration(hintText: 'Inserisci un nome'),
+                decoration: InputDecoration(hintText: 'Inserisci un titolo'),
               ),
               TextField(
                 controller: _linkController,
