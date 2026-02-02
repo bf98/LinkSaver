@@ -70,7 +70,8 @@ class AuthService {
     return _auth.authStateChanges();
   }
 
-  Future<User?> registerWithEmailAndPassword(
+
+  Future<String?> registerWithEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -84,22 +85,15 @@ class AuthService {
 
       await _firestore.collection('users').doc(uid).set({'email': email});
 
-      return result.user;
+      return "Registrazione effettuata con successo";
     } on FirebaseAuthException catch (e) {
-      print("FirebaseAuthException: ${e.code} - ${e.message}");
-      if (e.code == 'weak-password') {
-        print("La password è troppo debole.");
-      } else if (e.code == 'email-already-in-use') {
-        print("L'email è già in uso.");
-      }
-      return null;
+	  return "Errore Registrazione: ${e.code}, ${e.message}";
     } catch (e) {
-      print("Errore generale durante la registrazione: $e");
-      return null;
+      return "Errore generale durante la registrazione: $e";
     }
   }
 
-  Future<User?> signInWithEmailAndPassword(
+  Future<String?> signInWithEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -108,20 +102,14 @@ class AuthService {
         email: email,
         password: password,
       );
-      return result.user;
+      return "Log-In effettuato con successo";
     } on FirebaseAuthException catch (e) {
-      print("FirebaseAuthException: ${e.code} - ${e.message}");
-      if (e.code == 'user-not-found') {
-        print("Utente non trovato");
-      } else if (e.code == 'wrong-password') {
-        print("Password errata");
-      }
-      return null;
+	  return "Errore Log-In: ${e.code}, ${e.message}";
     } catch (e) {
-      print("Errore generale durante il login: $e");
-      return null;
+      return "Errore generale durante il login: $e";
     }
   }
+
 
   Future<void> signOut() async {
     try {
@@ -203,37 +191,27 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                User? user = await _auth.signInWithEmailAndPassword(
+                String? user = await _auth.signInWithEmailAndPassword(
                   _emailController.text,
                   _passwordController.text,
                 );
-                if (user != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Hai effettuato il Log-In')),
+                    SnackBar(content: Text(user ?? '.')),
                   );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Log-In Fallito')),
-                  );
-                }
+				  print(user);
               },
               child: const Text('Accedi'),
             ),
             ElevatedButton(
               onPressed: () async {
-                User? user = await _auth.registerWithEmailAndPassword(
+                String? user = await _auth.registerWithEmailAndPassword(
                   _emailController.text,
                   _passwordController.text,
                 );
-                if (user != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Registrato con Successo')),
+                    SnackBar(content: Text(user ?? '.')),
                   );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Registrazione Fallita')),
-                  );
-                }
+				  print(user);
               },
               child: const Text('Registrati'),
             ),
@@ -644,7 +622,7 @@ class _LinksScreenState extends State<LinksScreen> {
   Widget build(BuildContext context) {
     List<LinkItem> filteredLinks = filter == null || filter!.isEmpty
         ? links
-        : links.where((link) => link.title.contains(filter!)).toList();
+        : links.where((link) => link.title.toLowerCase().contains(filter!.toLowerCase())).toList();
 
     if (showFavoritesOnly) {
       filteredLinks = filteredLinks.where((link) => link.isFavorite).toList();
